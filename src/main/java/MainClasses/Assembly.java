@@ -58,6 +58,7 @@ public class Assembly {
 
                     boolean carry = false;
                     boolean overflow = false;
+                    boolean negative = false;
 
                     switch (opcode) {
                         case 0x01: // MOV r1, imm
@@ -66,45 +67,51 @@ public class Assembly {
                         case 0x02: // ADD r1, r2, r3
                             long result = (long) register[r2] + (long) register[addr];
                             carry = (result > Integer.MAX_VALUE);
-                            overflow = ((register[r2] > 0 && register[addr] > 0 && result < 0) ||
+                            overflow = (
+                                    (register[r2] > 0 && register[addr] > 0 && result < 0) ||
                                     (register[r2] < 0 && register[addr] < 0 && result > 0));
                             register[r1] = (int) result;
-                            flagsPanel.updateFlags(register[r1], carry, overflow);
+                            negative = register[r1] < 0;
+                            flagsPanel.updateFlags(register[r1], carry, overflow, negative);
                             break;
                         case 0x03: // SUB r1, r2, r3
                             result = (long) register[r2] - (long) register[addr];
                             carry = (register[r2] < register[addr]);
-                            overflow = ((register[r2] > 0 && register[addr] < 0 && result < 0) ||
+                            overflow = (
+                                    (register[r2] > 0 && register[addr] < 0 && result < 0) ||
                                     (register[r2] < 0 && register[addr] > 0 && result > 0));
                             register[r1] = (int) result;
-                            flagsPanel.updateFlags(register[r1], carry, overflow);
+                            negative = register[r1] < 0;
+                            flagsPanel.updateFlags(register[r1], carry, overflow, negative);
                             break;
                         case 0x04: // MUL r1, r2, r3
                             result = (long) register[r2] * (long) register[addr];
                             carry = (result > Integer.MAX_VALUE || result < Integer.MIN_VALUE);
                             overflow = (register[r2] != 0 && result / register[r2] != register[addr]);
                             register[r1] = (int) result;
-                            flagsPanel.updateFlags(register[r1], carry, overflow);
+                            negative = register[r1] < 0;
+                            flagsPanel.updateFlags(register[r1], carry, overflow, negative);
                             break;
                         case 0x05: // DIV r1, r2, r3
                             if (register[addr] != 0) {
                                 result = register[r2] / register[addr];
                                 overflow = (register[r2] == Integer.MIN_VALUE && register[addr] == -1);
                                 register[r1] = (int) result;
-                                flagsPanel.updateFlags(register[r1], false, overflow);
+                                negative = register[r1] < 0;
+                                flagsPanel.updateFlags(register[r1], false, overflow, negative);
                             }
                             break;
                         case 0x06: // AND r1, r2, r3
                             register[r1] = register[r2] & register[addr];
-                            flagsPanel.updateFlags(register[r1], false, false);
+                            flagsPanel.updateFlags(register[r1], false, false, false);
                             break;
                         case 0x07: // OR r1, r2, r3
                             register[r1] = register[r2] | register[addr];
-                            flagsPanel.updateFlags(register[r1], false, false);
+                            flagsPanel.updateFlags(register[r1], false, false, false);
                             break;
                         case 0x08: // STORE r1, addr
                             memory[addr] = register[r1];
-                            flagsPanel.updateFlags(register[r1], false, false);
+                            flagsPanel.updateFlags(register[r1], false, false, false);
                             break;
                         case 0x09: // LOAD r1, addr
                             register[r1] = memory[addr];

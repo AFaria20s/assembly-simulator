@@ -88,6 +88,12 @@ public class Assembler {
             int r2 = REGISTERS.get(parts[2]);
             int r3 = REGISTERS.get(parts[3]);
 
+            /*
+                TODO: Check if r3 starts with 0x to specify PC and
+                      distinguish conditional JMP instructions
+            */
+            //if()
+
             machineCode |= (r1 << 16);
             machineCode |= (r2 << 8);
             machineCode |= r3;
@@ -95,6 +101,10 @@ public class Assembler {
             int r1 = REGISTERS.get(parts[1]);
             if (parts[2].startsWith("#")) {
                 int immediateValue = Integer.parseInt(parts[2].substring(1));
+                machineCode |= (r1 << 16);
+                machineCode |= immediateValue;
+            } else if(parts[2].startsWith("0x")){
+                int immediateValue = Integer.parseInt(parts[2].substring(2));
                 machineCode |= (r1 << 16);
                 machineCode |= immediateValue;
             } else {

@@ -6,8 +6,9 @@ import java.awt.*;
 public class FlagsPanel extends JPanel {
     private JCheckBox zeroFlag;
     private JCheckBox signFlag;
-    private JCheckBox carryFlag;      // Added for Carry Flag
-    private JCheckBox overflowFlag;   // Added for Overflow Flag
+    private JCheckBox carryFlag;
+    private JCheckBox overflowFlag;
+    private JCheckBox negativeFlag;
 
     public FlagsPanel() {
         setLayout(new GridLayout(5, 1));  // Adjusted for 4 flags
@@ -17,22 +18,26 @@ public class FlagsPanel extends JPanel {
         zeroFlag.setEnabled(false);
         signFlag = new JCheckBox("Sign Flag");
         signFlag.setEnabled(false);
-        carryFlag = new JCheckBox("Carry Flag");       // Added
+        carryFlag = new JCheckBox("Carry Flag");
         carryFlag.setEnabled(false);
-        overflowFlag = new JCheckBox("Overflow Flag"); // Added
+        negativeFlag = new JCheckBox("Negative Flag");
+        negativeFlag.setEnabled(false);
+        overflowFlag = new JCheckBox("Overflow Flag");
         overflowFlag.setEnabled(false);
 
         add(zeroFlag);
         add(signFlag);
         add(carryFlag);
-        add(overflowFlag);   // Added to layout
+        add(negativeFlag);
+        add(overflowFlag);
     }
 
-    public void updateFlags(int result, boolean carry, boolean overflow) {
+    public void updateFlags(int result, boolean carry, boolean overflow, boolean negative) {
         zeroFlag.setSelected(result == 0);
         signFlag.setSelected(result < 0);
-        carryFlag.setSelected(carry);           // Update carry flag
-        overflowFlag.setSelected(overflow);     // Update overflow flag
+        carryFlag.setSelected(carry);
+        negativeFlag.setSelected(negative);
+        overflowFlag.setSelected(overflow);
 
         this.revalidate();
         this.repaint();
@@ -41,8 +46,8 @@ public class FlagsPanel extends JPanel {
     public void resetFlags() {
         zeroFlag.setSelected(false);
         signFlag.setSelected(false);
-        carryFlag.setSelected(false);       // Reset carry flag
-        overflowFlag.setSelected(false);    // Reset overflow flag
+        carryFlag.setSelected(false);
+        overflowFlag.setSelected(false);
 
         this.revalidate();
         this.repaint();

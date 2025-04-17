@@ -8,6 +8,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class EditorPanel extends JPanel {
     private JTextPane editorTextPane;
@@ -52,6 +54,22 @@ public class EditorPanel extends JPanel {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateLineNumbers();
+            }
+        });
+
+        this.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
             }
         });
     }
