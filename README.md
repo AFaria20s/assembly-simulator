@@ -1,8 +1,8 @@
-# FonSim
+# SALS
 
 ## Simple Assembly Language Simulator
 
-FonSim is a basic assembly language simulator written in Java. It simulates the behavior of a simple processor with features including arithmetic, logical, and memory operations.
+SALS is a basic assembly language simulator written in Java, totally custom-made. It simulates the behavior of a simple processor with features including arithmetic, logical, and memory operations.
 
 ## Features
 
