@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FlagsPanel extends JPanel {
-    private JCheckBox zeroFlag;
-    private JCheckBox signFlag;
-    private JCheckBox carryFlag;
-    private JCheckBox overflowFlag;
-    private JCheckBox negativeFlag;
+    private final JCheckBox zeroFlag;
+    private final JCheckBox signFlag;
+    private final JCheckBox carryFlag;
+    private final JCheckBox overflowFlag;
+    private final JCheckBox negativeFlag;
 
     public FlagsPanel() {
         setLayout(new GridLayout(5, 1));  // Adjusted for 4 flags

@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class RegistersTable extends JTable {
-    private DefaultTableModel tableModel;
+    private final DefaultTableModel tableModel;
     private static final String[] COLUMN_NAMES = {"Register", "Value"};
     private static final Object[][] INITIAL_DATA = {
             {"R0", 0},
