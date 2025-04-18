@@ -1,11 +1,11 @@
 package MainClasses;
 
-import GUI.settingsComponents.ProgramExecutionPanel;
 import GUI.windowComponents.FlagsPanel;
 import GUI.windowComponents.MemoryPanel;
 import GUI.windowComponents.RegistersPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -163,6 +163,7 @@ public class Assembly {
                     iteration++;
                 } else {
                     timer.stop();
+                    Toolkit.getDefaultToolkit().beep();
                     flagsPanel.resetFlags();
                     if (iteration >= maxIterations) {
                         System.out.println("Execution halted: Maximum iterations reached.");

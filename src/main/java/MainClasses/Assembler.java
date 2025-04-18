@@ -10,18 +10,11 @@ import java.util.Map;
  */
 public class Assembler {
 
-    // HashMap to store opcode mappings for each instruction mnemonic
     private static final Map<String, Integer> OPCODES = new HashMap<>();
-
-    // HashMap to store register mappings for register names
     private static final Map<String, Integer> REGISTERS = new HashMap<>();
-
-    // HashMap to store the number of arguments each instruction requires
     private static final Map<String, Integer> ARG_COUNTS = new HashMap<>();
 
-    // Static block to initialize the opcode, register, and argument count maps
     static {
-        // Initialize the opcode mappings for each mnemonic
         OPCODES.put("mov",  0x01);
         OPCODES.put("add",  0x02);
         OPCODES.put("sub",  0x03);
@@ -39,7 +32,6 @@ public class Assembler {
         OPCODES.put("jmpr", 0x0F);
         OPCODES.put("nop",  0xFF);
 
-        // Initialize the register mappings for register names
         REGISTERS.put("r0", 0);
         REGISTERS.put("r1", 1);
         REGISTERS.put("r2", 2);
@@ -49,7 +41,6 @@ public class Assembler {
         REGISTERS.put("r6", 6);
         REGISTERS.put("r7", 7);
 
-        // Initialize the argument counts for each mnemonic
         ARG_COUNTS.put("mov",  2);
         ARG_COUNTS.put("add",  3);
         ARG_COUNTS.put("sub",  3);
@@ -69,52 +60,40 @@ public class Assembler {
     }
 
     /**
-     * Assembles an instruction from its string representation into an integer representing the machine code.
-     *
-     * @param instruction The assembly instruction as a string.
-     * @return An integer representing the machine code for the instruction.
+     * Parses an assembly instruction into machine code.
      */
     public int parseInstruction(String instruction) {
-        String[] parts = instruction.split(" ");
+        String[] parts = instruction.trim().split("\\s+");
         String mnemonic = parts[0];
         int opcode = OPCODES.get(mnemonic);
         int argCount = ARG_COUNTS.get(mnemonic);
-
         int machineCode = opcode << 24;
 
-        // Handle different argument counts for instructions
         if (argCount == 3) {
-            int r1 = REGISTERS.get(parts[1]);
-            int r2 = REGISTERS.get(parts[2]);
-            int r3 = REGISTERS.get(parts[3]);
-
-            /*
-                TODO: Check if r3 starts with 0x to specify PC and
-                      distinguish conditional JMP instructions
-            */
-            //if()
+            int r1 = REGISTERS.getOrDefault(parts[1], -1);
+            int r2 = REGISTERS.getOrDefault(parts[2], -1);
+            int r3;
 
             machineCode |= (r1 << 16);
             machineCode |= (r2 << 8);
+
+            if (REGISTERS.containsKey(parts[3])) {
+                r3 = REGISTERS.get(parts[3]);
+            } else {
+                r3 = parseImmediate(parts[3]);
+            }
+
             machineCode |= r3;
+
         } else if (argCount == 2) {
             int r1 = REGISTERS.get(parts[1]);
-            if (parts[2].startsWith("#")) {
-                int immediateValue = Integer.parseInt(parts[2].substring(1));
-                machineCode |= (r1 << 16);
-                machineCode |= immediateValue;
-            } else if(parts[2].startsWith("0x")){
-                int immediateValue = Integer.parseInt(parts[2].substring(2));
-                machineCode |= (r1 << 16);
-                machineCode |= immediateValue;
-            } else {
-                int addr = Integer.parseInt(parts[2]);
-                machineCode |= (r1 << 16);
-                machineCode |= addr;
-            }
+            int value = parseImmediate(parts[2]);
+            machineCode |= (r1 << 16);
+            machineCode |= value;
+
         } else if (argCount == 1) {
             if (mnemonic.equals("jmp")) {
-                int addr = Integer.parseInt(parts[1]);
+                int addr = parseImmediate(parts[1]);
                 machineCode |= addr;
             } else if (mnemonic.equals("jmpr")) {
                 int reg = REGISTERS.get(parts[1]);
@@ -123,5 +102,18 @@ public class Assembler {
         }
 
         return machineCode;
+    }
+
+    /**
+     * Parses an immediate value from a string, supporting hex (0x), decimal, and # prefix.
+     */
+    private int parseImmediate(String value) {
+        if (value.startsWith("0x")) {
+            return Integer.parseInt(value.substring(2), 16);
+        } else if (value.startsWith("#")) {
+            return Integer.parseInt(value.substring(1)); // decimal
+        } else {
+            return Integer.parseInt(value); // plain decimal or label-resolved int
+        }
     }
 }
