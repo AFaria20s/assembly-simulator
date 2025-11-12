@@ -169,6 +169,7 @@ public class Assembly {
                         System.out.println("Execution halted: Maximum iterations reached.");
                     }
                 }
+                System.out.println(pc);
             }
         };
 

@@ -43,8 +43,8 @@ SALS is a basic assembly language simulator written in Java, totally custom-made
      MOV R1, 10
      MOV R2, 5
      ADD R1, R2, 0
-     STORE R1, 0
-     LOAD R1, 0
+     STR R1, 0
+     LD R1, 0
      JMP 0
      ```
 

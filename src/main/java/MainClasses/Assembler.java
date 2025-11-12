@@ -1,5 +1,6 @@
 package MainClasses;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +64,8 @@ public class Assembler {
      * Parses an assembly instruction into machine code.
      */
     public int parseInstruction(String instruction) {
-        String[] parts = instruction.trim().split("\\s+");
+        String[] parts = instruction.toLowerCase().trim().split("\\s+");
+        System.out.println(Arrays.toString(parts)+"\n"+parts.length);
         String mnemonic = parts[0];
         int opcode = OPCODES.get(mnemonic);
         int argCount = ARG_COUNTS.get(mnemonic);
@@ -86,7 +88,7 @@ public class Assembler {
             machineCode |= r3;
 
         } else if (argCount == 2) {
-            int r1 = REGISTERS.get(parts[1]);
+            int r1 = REGISTERS.get(parts[1].toLowerCase());
             int value = parseImmediate(parts[2]);
             machineCode |= (r1 << 16);
             machineCode |= value;
