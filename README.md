@@ -38,13 +38,13 @@ SALS is a basic assembly language simulator written in Java, totally custom-made
    - Make sure that you have latest version of JRE and JDK-22 installed.
 
 2. **Create a Program File:**
-   - Create a file (for example) `myProgram.txt` with your instructions, each on a new line. For example:
+   - Create a file `myProgram.txt` with your instructions, each on a new line. For example:
      ```
-     MOV R1, 10
-     MOV R2, 5
-     ADD R1, R2, 0
-     STR R1, 0
-     LD R1, 0
+     MOV R1 10
+     MOV R2 5
+     ADD R1 R2 0
+     STR R1 0
+     LD R1 0
      JMP 0
      ```
 
