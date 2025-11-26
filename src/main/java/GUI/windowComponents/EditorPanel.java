@@ -1,6 +1,6 @@
 package GUI.windowComponents;
 
-import MainClasses.Assembly;
+import Interpreter.Assembly;
 import Utils.FileHandler;
 
 import javax.swing.*;

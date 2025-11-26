@@ -1,5 +1,3 @@
-package MainClasses;
-
 import GUI.Window;
 import Utils.ConfigManager;
 
