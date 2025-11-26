@@ -1,5 +1,0 @@
-mov eax #10
-mov ecx #90
-mov ebx #20
-mov egx #38
-add efx ecx eax
